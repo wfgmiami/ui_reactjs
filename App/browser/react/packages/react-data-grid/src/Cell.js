@@ -106,8 +106,9 @@ class Cell extends React.Component {
 
   onCellClick = (e) => {
     let meta = this.props.cellMetaData;
+    console.log('Cells.js this.props......',  this.props)
     if (meta != null && meta.onCellClick && typeof (meta.onCellClick) === 'function') {
-      meta.onCellClick({ rowIdx: this.props.rowIdx, idx: this.props.idx }, e);
+      meta.onCellClick({ rowIdx: this.props.rowIdx, idx: this.props.idx, id: this.props.rowData.id }, e);
     }
   };
 

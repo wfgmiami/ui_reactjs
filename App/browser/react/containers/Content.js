@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDataGrid from '../packages/react-data-grid';
+//const ReactDataGrid = require('../packages/react-data-grid');
 import update from 'immutability-helper';
 import numeral from 'numeral';
 const {dataFields} = require('../dataFields.js');
@@ -57,7 +58,6 @@ export default class Content extends React.Component{
 		this.getSize = this.getSize.bind(this);
 		this.handleFilterChange = this.handleFilterChange.bind(this);
 		this.onColumnGroupAdded = this.onColumnGroupAdded.bind(this);
-		this.updateRowsOnGroup = this.updateRowsOnGroup.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps){
@@ -134,41 +134,43 @@ export default class Content extends React.Component{
 //cell editing  selectedCell.rowIdx selectedCell.idx (from 0)
   getSelectedCell = (args) => {
 	  const selectedCell = args;
+	  console.log('getSelectedCell args', args)
 	  this.setState({ selectedCell });
   }
   
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+	const trueId = this.state.selectedCell.id;  
     let rows = this.props.rows.slice();
     let updatedRowsArr = [];
-    
+    console.log('................updated', updated)
     switch( Object.keys(updated)[0] ){
     	case 'curr_holding':
+    		console.log('updated, updated-0', updated, updated[0])
     		updated.curr_holding = numeral(updated.curr_holding).format('0,0');
-    		updated.sod_holdings = this.props.rows[this.state.selectedCell.rowIdx]['sod_holding'];
-
+    		updated.sod_holdings = this.props.rows[trueId]['sod_holding'];
+    		console.log('updated.........', updated)
     		const proposedAmount =  numeral(updated.curr_holding).value() - numeral(updated.sod_holdings).value();
     		updated.proposed_amount = numeral(proposedAmount).format('0,0');
     		
     		break;
     }
-
+// updating only one row - selecting not actual row number but the id of the record
     for (let i = fromRow; i <= toRow; i++) {
-      let rowToUpdate = rows[i];
+//      let rowToUpdate = rows[i];
+      let rowToUpdate = rows[trueId];
       let updatedRow = update(rowToUpdate, {$merge: updated});
-      rows[i] = updatedRow;
-      updatedRowsArr.push(i);
+      console.log('..........updatedRow', updatedRow)
+      rows[trueId] = updatedRow;
+      updatedRowsArr.push(trueId);
     }
     this.props.updateHoldings(updatedRowsArr, rows)
   };
   
-  updateRowsOnGroup(rows) {
-	  this.setState( { rows })
-  }
   
- 	render(){
- 		console.log('......in Content state, props', this.state, this.props);
-		return (
-		<DraggableContainer updateRowsOnGroup={ this.updateRowsOnGroup } rows={ this.state.rows }>
+	render(){
+		console.log('......in Content state, props', this.state, this.props);
+		return(
+		<DraggableContainer>
 	  		<ReactDataGrid
 	  		enableCellSelect
 	  		enableDragAndDrop={true}
@@ -183,7 +185,7 @@ export default class Content extends React.Component{
 			canFilter={true}
 			onCellSelected={ this.getSelectedCell }
 	  		onGridRowsUpdated={this.handleGridRowsUpdated}
-//	  		rowHeight={50}
+	//	  		rowHeight={50}
 			minHeight={650} />
 		</DraggableContainer>
 		)

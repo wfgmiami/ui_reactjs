@@ -10,6 +10,7 @@ const generateRows = ( pmt ) => {
 	for( let i = 0; i < pmt.length; i++){
 	
 		rows.push({ 
+			id: pmt[i].id,
 			root: pmt[i].root, 
 			group: pmt[i].root,
 			portfolio: pmt[i].portfolio, 

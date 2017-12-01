@@ -170,6 +170,7 @@ const Canvas = createReactClass({
       rows.push({ row, subRowDetails });
       i++;
     }
+    
     return rows;
   },
 

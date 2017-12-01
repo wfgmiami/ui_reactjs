@@ -82,7 +82,9 @@ const Row = createReactClass({
 
   getCell(column, i, selectedColumn) {
     let CellRenderer = this.props.cellRenderer;
+
     const { colVisibleStart, colVisibleEnd, idx, cellMetaData } = this.props;
+//  console.log('row.js........this.props', this.props, cellMetaData)
     const { key, formatter, locked } = column;
     const baseCellProps = { key: `${key}-${idx}`, idx: i, rowIdx: idx, height: this.getRowHeight(), column, cellMetaData };
 

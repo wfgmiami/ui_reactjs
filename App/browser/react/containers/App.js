@@ -75,7 +75,7 @@ class App extends Component{
 
 
 	render(){
-//        console.log('.....in App.js, state',this.state);
+        console.log('.....in App.js, state',this.state);
 		return(
 			<div className="container-fluid">
 				<Nav />

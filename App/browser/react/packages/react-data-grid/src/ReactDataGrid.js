@@ -188,6 +188,7 @@ const ReactDataGrid = createReactClass({
       || this.state.selected.active === false) {
       let idx = selected.idx;
       let rowIdx = selected.rowIdx;
+      
       if (this.isCellWithinBounds(selected)) {
         const oldSelection = this.state.selected;
         this.setState({selected: selected}, () => {
@@ -206,8 +207,7 @@ const ReactDataGrid = createReactClass({
   },
 
   onCellClick: function(cell: SelectedType, e: SyntheticEvent) {
-    this.onSelect({rowIdx: cell.rowIdx, idx: cell.idx});
-
+    this.onSelect({rowIdx: cell.rowIdx, idx: cell.idx, id: cell.id});
     if (this.props.onRowClick && typeof this.props.onRowClick === 'function') {
       this.props.onRowClick(cell.rowIdx, this.props.rowGetter(cell.rowIdx), this.getColumn(cell.idx));
     }
@@ -908,7 +908,7 @@ const ReactDataGrid = createReactClass({
   },
 
   render() {
-
+console.log('in reactDataGrid, this.props', this.props)
     let cellMetaData = {
       rowKey: this.props.rowKey,
       selected: this.state.selected,
