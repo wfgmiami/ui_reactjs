@@ -1,0 +1,3 @@
+export const GET_HOLDINGS = 'GET_HOLDINGS';
+
+export const LOAD_HOLDINGS = 'LOAD_HOLDINGS';
